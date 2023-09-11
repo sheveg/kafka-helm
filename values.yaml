@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 kafkaConsumer:
-  name: "Kafka Consumer"
+  name: "kafka-consumer"
   image:
     repository: ghcr.io/sheveg/kafkaconsumer
     pullPolicy: Always
@@ -17,7 +17,7 @@ kafkaConsumer:
   replicaCount: 1
 
 kafkaProducer:
-  name: "Kafka Producer"
+  name: "kafka-producer"
   image:
     repository: ghcr.io/sheveg/kafkaproducer
     pullPolicy: Always

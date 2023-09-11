@@ -1,0 +1,72 @@
+# Default values for kafka-producer.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+kafkaConsumer:
+  name: "Kafka Consumer"
+  image:
+    repository: ghcr.io/sheveg/kafkaconsumer
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "main"
+  env:
+  - name: Kafka__BootstrapUrl
+    value: "my-cluster-kafka-bootstrap:9092"
+  - name: Kafka__Topic
+    value: "random-messages"
+  replicaCount: 1
+
+kafkaProducer:
+  name: "Kafka Producer"
+  image:
+    repository: ghcr.io/sheveg/kafkaproducer
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "main"
+  env:
+  - name: Kafka__BootstrapUrl
+    value: "my-cluster-kafka-bootstrap:9092"
+  - name: Kafka__Topic
+    value: "random-messages"
+  replicaCount: 1
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+   fsGroup: 15555
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 15555
+  runAsGroup: 15555
+  privileged: false
+  allowPrivilegeEscalation: false
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi

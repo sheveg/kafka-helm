@@ -1,6 +1,8 @@
-# Default values for kafka-producer.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+kafkaCluster:
+  name: "kafka-cluster"
+
+kafkaTopic:
+  name: "random-messages"
 
 kafkaConsumer:
   name: "kafka-consumer"
@@ -11,7 +13,7 @@ kafkaConsumer:
     tag: "main"
   env:
   - name: Kafka__BootstrapUrl
-    value: "my-cluster-kafka-bootstrap:9092"
+    value: "kafka-cluster-kafka-bootstrap:9092"
   - name: Kafka__Topic
     value: "random-messages"
   replicaCount: 1
@@ -25,7 +27,7 @@ kafkaProducer:
     tag: "main"
   env:
   - name: Kafka__BootstrapUrl
-    value: "my-cluster-kafka-bootstrap:9092"
+    value: "kafka-cluster-kafka-bootstrap:9092"
   - name: Kafka__Topic
     value: "random-messages"
   replicaCount: 1

@@ -2,38 +2,82 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka
 metadata:
-  name: {{ .Values.kafkaCluster.name }}
+  name: {{ .Values.kafka.name }}
 spec:
   kafka:
-    version: 3.5.1
-    replicas: 3
+    version: {{ .Values.kafka.version }}
+    replicas: {{ .Values.kafka.replicas }}
     listeners:
       - name: plain
         port: 9092
         type: internal
         tls: false
-      - name: tls
-        port: 9093
-        type: internal
-        tls: true
+      - name: external
+        port: 9094
+        type: nodeport
+        tls: false
+    config:
+      offsets.topic.replication.factor: {{ .Values.kafka.cluster.offsetsTopicReplicationFactor }}
+      transaction.state.log.replication.factor: {{ .Values.kafka.cluster.transactionStateLogReplicationFactor }}
+      transaction.state.log.min.isr: {{ .Values.kafka.cluster.transactionStateLogMinInSyncReplicas }}
+      log.message.format.version: {{ .Values.kafka.cluster.logMessageFormatVersion | quote }}
+      inter.broker.protocol.version: {{ .Values.kafka.cluster.interBrokerProtocolVersion | quote }}
+      auto.create.topics.enable: {{ .Values.kafka.cluster.autoCreateTopicsEnable | quote }}
+      default.replication.factor: {{ .Values.kafka.cluster.defaultReplicationFactor }}
+      min.insync.replicas: {{ .Values.kafka.cluster.minInsyncReplicas }}
+    rack:
+      topologyKey: {{ .Values.nodeAffinityLabel }}
     storage:
       type: jbod
       volumes:
-      - id: 0
-        type: persistent-claim
-        size: 100Gi
+      - class: nfs1
         deleteClaim: false
-      - id: 1
+        id: 0
+        size: 1Gi
         type: persistent-claim
-        size: 100Gi
-        deleteClaim: false
+    template:
+      clusterRoleBinding:
+        metadata:
+          annotations:
+            argocd.argoproj.io/sync-options: Prune=false
+            argocd.argoproj.io/compare-options: IgnoreExtraneous
+    resources:
+      {{- toYaml .Values.kafka.resources | nindent 6 }}
   zookeeper:
-    replicas: 3
+    replicas: {{ .Values.zookeeper.replicas }}
     storage:
-      type: persistent-claim
-      size: 100Gi
+      class: nfs1
       deleteClaim: false
+      size: 1Gi
+      type: persistent-claim
+    template:
+      pod:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: {{ .Values.nodeAffinityLabel }}
+                  operator: Exists
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    strimzi.io/cluster: kafka
+                    strimzi.io/name: kafka-zookeeper
+                topologyKey: {{ .Values.nodeAffinityLabel }}
+              weight: 100
+    resources:
+      {{- toYaml .Values.zookeeper.resources | nindent 6 }}
   entityOperator:
-    topicOperator: {}
-    userOperator: {}
-{{- end  }}
+    topicOperator:
+      resources:
+        {{- toYaml .Values.entityOperator.topicOperator.resources | nindent 8 }}
+    userOperator:
+      resources:
+        {{- toYaml .Values.entityOperator.userOperator.resources | nindent 8 }}
+    tlsSidecar:
+      resources:
+        {{- toYaml .Values.entityOperator.tlsSidecar.resources | nindent 8 }}
+{{- end }}

@@ -1,8 +1,63 @@
-kafkaCluster:
+kafka:
   name: "kafka-cluster"
+  version: "3.5.1"
+  replicas: 3
+  cluster:
+    # For upgrading details see
+    # https://strimzi.io/docs/operators/latest/deploying.html#proc-upgrading-brokers-newer-kafka-str
+    logMessageFormatVersion: "3.2.1"
+    interBrokerProtocolVersion: "3.2.1"
+    offsetsTopicReplicationFactor: 3
+    transactionStateLogReplicationFactor: 3
+    transactionStateLogMinInSyncReplicas: 1
+    autoCreateTopicsEnable: true
+    defaultReplicationFactor: 3
+    minInsyncReplicas: 1
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 1024Mi
+    requests:
+      cpu: 200m
+      memory: 768Mi
 
-kafkaTopic:
-  name: "random-messages"
+nodeAffinityLabel: kubernetes.io/hostname
+
+zookeeper:
+  replicas: 3
+  resources:
+    limits:
+      cpu: 800m
+      memory: 512Mi
+    requests:
+      cpu: 20m
+      memory: 256Mi
+
+entityOperator:
+  topicOperator:
+    resources:
+      limits:
+        cpu: 400m
+        memory: 256Mi
+      requests:
+        cpu: 20m
+        memory: 224Mi
+  userOperator:
+    resources:
+      limits:
+        cpu: 400m
+        memory: 256Mi
+      requests:
+        cpu: 10m
+        memory: 192Mi
+  tlsSidecar:
+    resources:
+      limits:
+        cpu: 600m
+        memory: 16Mi
+      requests:
+        cpu: 10m
+        memory: 8Mi
 
 kafkaConsumer:
   name: "kafka-consumer"
@@ -60,15 +115,3 @@ securityContext:
   runAsGroup: 15555
   privileged: false
   allowPrivilegeEscalation: false
-
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi

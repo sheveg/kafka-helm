@@ -30,7 +30,7 @@ spec:
     storage:
       type: jbod
       volumes:
-      - class: nfs1
+      - class: standard
         deleteClaim: false
         id: 0
         size: 1Gi
@@ -46,7 +46,7 @@ spec:
   zookeeper:
     replicas: {{ .Values.zookeeper.replicas }}
     storage:
-      class: nfs1
+      class: standard
       deleteClaim: false
       size: 1Gi
       type: persistent-claim

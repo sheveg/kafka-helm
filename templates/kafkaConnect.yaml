@@ -1,0 +1,30 @@
+{{- if .Capabilities.APIVersions.Has "kafka.strimzi.io/v1beta2" }}
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnect
+metadata:
+  name: {{ .Values.kafkaConnect.name }}
+#  annotations:
+#  # use-connector-resources configures this KafkaConnect
+#  # to use KafkaConnector resources to avoid
+#  # needing to call the Connect REST API directly
+#    strimzi.io/use-connector-resources: "true"
+spec:
+  version: {{ .Values.kafkaConnect.version }}
+  replicas: {{ .Values.kafkaConnect.replicas }}
+  bootstrapServers: {{ .Values.kafka.name }}-kafka-bootstrap:9092
+  config:
+    group.id: connect-cluster
+    offset.storage.topic: connect-cluster-offsets
+    config.storage.topic: connect-cluster-configs
+    status.storage.topic: connect-cluster-status
+    # -1 means it will use the default replication factor configured in the broker
+    config.storage.replication.factor: -1
+    offset.storage.replication.factor: -1
+    status.storage.replication.factor: -1
+    connector.class: io.confluent.connect.jdbc.JdbcSinkConnector
+    tasks.max: 1
+    topics: {{ .Values.spec.topics }}
+    auto.create: true
+    name: jdbc-sink
+    connection.url: postgresql-cluster:5432
+{{- end }}

@@ -1,3 +1,9 @@
+kafkaConnect:
+  name: "kafka-connect-cluster"
+  version: "3.5.1"
+  replicas: 1
+  topics: random-messages
+
 kafka:
   name: "kafka-cluster"
   version: "3.5.1"

@@ -23,7 +23,7 @@ spec:
     status.storage.replication.factor: -1
     connector.class: io.confluent.connect.jdbc.JdbcSinkConnector
     tasks.max: 1
-    topics: {{ .Values.spec.topics }}
+    topics: {{ .Values.kafkaConnect.config.topics }}
     auto.create: true
     name: jdbc-sink
     connection.url: postgresql-cluster:5432

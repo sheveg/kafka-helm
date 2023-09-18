@@ -12,6 +12,16 @@ spec:
   version: {{ .Values.kafkaConnect.version }}
   replicas: {{ .Values.kafkaConnect.replicas }}
   bootstrapServers: {{ .Values.kafka.name }}-kafka-bootstrap:9092
+  build:
+    output:
+      type: docker
+      image: ghcr.io/sheveg/connect-cluster-jdbc:latest
+      pushSecret: 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
+    plugins:
+      - name: jdbc-sink-connector
+        artifacts:
+          - type: zip
+            url: https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-jdbc/versions/10.7.4/confluentinc-kafka-connect-jdbc-10.7.4.zip
   config:
     group.id: connect-cluster
     offset.storage.topic: connect-cluster-offsets

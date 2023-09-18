@@ -26,5 +26,7 @@ spec:
     topics: {{ .Values.kafkaConnect.config.topics }}
     auto.create: true
     name: jdbc-sink
-    connection.url: postgresql-cluster.postgres.svc:5432
+    connection.url: jdbc:postgressql://postgresql-cluster.postgres.svc:5432/logs
+    connection.user: loguser
+    connection: password: postgrespw
 {{- end }}

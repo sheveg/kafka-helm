@@ -28,5 +28,5 @@ spec:
     name: jdbc-sink
     connection.url: jdbc:postgressql://postgresql-cluster.postgres.svc:5432/logs
     connection.user: loguser
-    connection: password: postgrespw
+    connection.password: postgrespw
 {{- end }}

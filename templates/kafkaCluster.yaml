@@ -22,6 +22,9 @@ spec:
         port: 9094
         type: nodeport
         tls: false
+    authorization:
+      type: simple
+      superUsers: {}
     config:
       offsets.topic.replication.factor: {{ .Values.kafka.cluster.offsetsTopicReplicationFactor }}
       transaction.state.log.replication.factor: {{ .Values.kafka.cluster.transactionStateLogReplicationFactor }}

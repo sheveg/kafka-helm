@@ -5,8 +5,8 @@ metadata:
   name: confluent-schema-registry
 spec:
   strimziVersion: v1beta2
-  listener: plain
-  securityProtocol: PLAINTEXT
+  listener: tls
+  securityProtocol: tls
   compatibilityLevel: forward
   registryImage: confluentinc/cp-schema-registry
   registryImageTag: "7.2.1"

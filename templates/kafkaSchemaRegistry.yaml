@@ -1,0 +1,17 @@
+{{- if .Capabilities.APIVersions.Has "roundtable.lsst.codes/v1beta1" }}
+apiVersion: roundtable.lsst.codes/v1beta1
+kind: StrimziSchemaRegistry
+metadata:
+  name: confluent-schema-registry
+spec:
+  strimziVersion: v1beta2
+  listener: plain
+  securityProtocol: PLAINTEXT
+  compatibilityLevel: forward
+  registryImage: confluentinc/cp-schema-registry
+  registryImageTag: "7.2.1"
+  cpuLimit: ""
+  cpuRequest: ""
+  memoryLimit: ""
+  memoryRequest: ""
+{{- end }}

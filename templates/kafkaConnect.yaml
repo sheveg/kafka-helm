@@ -3,11 +3,11 @@ apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnect
 metadata:
   name: {{ .Values.kafkaConnect.name }}
-#  annotations:
-#  # use-connector-resources configures this KafkaConnect
-#  # to use KafkaConnector resources to avoid
-#  # needing to call the Connect REST API directly
-#    strimzi.io/use-connector-resources: "true"
+  annotations:
+  # use-connector-resources configures this KafkaConnect
+  # to use KafkaConnector resources to avoid
+  # needing to call the Connect REST API directly
+    strimzi.io/use-connector-resources: "true"
 spec:
   version: {{ .Values.kafkaConnect.version }}
   replicas: {{ .Values.kafkaConnect.replicas }}

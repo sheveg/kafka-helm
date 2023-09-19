@@ -4,7 +4,7 @@ kind: KafkaConnector
 metadata:
   name: postgres-connector
   labels:
-    strimzi.io/cluster: my-connect-cluster
+    strimzi.io/cluster: {{ .Values.kafkaConnect.name }}
 spec:
   class: io.confluent.connect.jdbc.JdbcSinkConnector
   tasksMax: 1

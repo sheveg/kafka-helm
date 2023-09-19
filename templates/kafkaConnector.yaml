@@ -17,6 +17,7 @@ spec:
     auto.create: true
     auto.evolve: true
     pk.mode: record_value
+    delete.enabled: true
     connection.url: jdbc:postgresql://postgresql-cluster.postgres.svc:5432/logs
     connection.user: loguser
     connection.password: postgrespw

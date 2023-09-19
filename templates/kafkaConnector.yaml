@@ -10,7 +10,6 @@ spec:
   tasksMax: 1
   config:
     topics: {{ .Values.kafkaConnect.config.topics }}
-    name: jdbc-sink
     value.converter.schemas.enable: false
     auto.create: true
     connection.url: jdbc:postgresql://postgresql-cluster.postgres.svc:5432/logs

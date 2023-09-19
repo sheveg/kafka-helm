@@ -24,7 +24,7 @@ spec:
         tls: false
     authorization:
       type: simple
-      superUsers: {}
+      superUsers: []
     config:
       offsets.topic.replication.factor: {{ .Values.kafka.cluster.offsetsTopicReplicationFactor }}
       transaction.state.log.replication.factor: {{ .Values.kafka.cluster.transactionStateLogReplicationFactor }}

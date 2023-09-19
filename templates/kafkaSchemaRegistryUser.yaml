@@ -5,4 +5,6 @@ metadata:
   name: confluent-schema-registry
   labels:
     strimzi.io/cluster: {{ .Values.kafka.name }}
+spec: {}
+  
 {{- end }}

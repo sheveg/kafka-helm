@@ -10,14 +10,15 @@ spec:
   tasksMax: 1
   config:
     topics: {{ .Values.kafkaConnect.config.topics }}
-    value.converter.schemas.enable: false
+    value.converter.schemas.enable: true
     value.converter: org.apache.kafka.connect.json.JsonConverter
     key.converter.schemas.enable: false
     key.converter: org.apache.kafka.connect.json.JsonConverter
     auto.create: true
     auto.evolve: true
     pk.mode: record_value
-    delete.enabled: true
+    pk.fields: id
+    insert.mode : upsert
     connection.url: jdbc:postgresql://postgresql-cluster.postgres.svc:5432/logs
     connection.user: loguser
     connection.password: postgrespw

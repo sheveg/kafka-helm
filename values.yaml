@@ -111,7 +111,7 @@ consumer:
     - name: Kafka__SaslMechanism
       value: "{{ .Values.cluster.listener.authentication.type }}"
     - name: Kafka__SecurityProtocol
-      value: "SASL_PLAINTEXT"
+      value: "SASL_SSL"
   
   replicaCount: 1
 
@@ -136,7 +136,7 @@ producer:
     - name: Kafka__SaslMechanism
       value: "{{ .Values.cluster.listener.authentication.type }}"
     - name: Kafka__SecurityProtocol
-      value: "SASL_PLAINTEXT"
+      value: "SASL_SSL"
   replicaCount: 1
 
 imagePullSecrets: []

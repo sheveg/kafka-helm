@@ -90,8 +90,8 @@ consumer:
     pullPolicy: Always
     # Overrides the image tag whose default is the chart appVersion.
     tag: "main"
-  user: "consumerUser"
-  password: "consumerPW"
+  user: "consumer-user"
+  password: "consumer-password"
   env:
     - name: Kafka__BootstrapUrl
       value: "kafka-cluster-kafka-bootstrap:9092"

@@ -4,7 +4,7 @@ kind: KafkaTopic
 metadata:
   name: registry-schemas
   labels:
-    strimzi.io/cluster: {{ .Values.kafka.name }}
+    strimzi.io/cluster: {{ .Values.cluster.name }}
 spec:
   partitions: 1
   replicas: 3

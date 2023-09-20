@@ -4,7 +4,7 @@ kind: KafkaUser
 metadata:
   name: confluent-schema-registry
   labels:
-    strimzi.io/cluster: {{ .Values.kafka.name }}
+    strimzi.io/cluster: {{ .Values.cluster.name }}
 spec:
   authentication:
     type: tls

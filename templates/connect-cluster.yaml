@@ -11,7 +11,7 @@ metadata:
 spec:
   version: {{ .Values.connectCluster.version }}
   replicas: {{ .Values.connectCluster.replicas }}
-  bootstrapServers: {{ .Values.kafka.name }}-kafka-bootstrap:9092
+  bootstrapServers: {{ .Values.cluster.name }}-kafka-bootstrap:9092
   build:
     output:
       type: {{ .Values.connectCluster.build.output.type }}

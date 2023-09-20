@@ -8,16 +8,12 @@ spec:
     version: {{ .Values.cluster.version }}
     replicas: {{ .Values.cluster.replicas }}
     listeners:
-      - name: plain
-        port: 9092
-        type: internal
-        tls: false
-      - name: tls
-        port: 9093
-        type: internal
-        tls: true
+      - name: {{ .Values.cluster.listener.name }}
+        port: {{ .Values.cluster.listener.port }}
+        type: {{ .Values.cluster.listener.type }}
+        tls: {{ .Values.cluster.listener.tls }}
         authentication:
-          type: tls
+          type: {{ .Values.cluster.listener.authentication.type }}
       - name: external
         port: 9094
         type: nodeport

@@ -6,6 +6,8 @@ metadata:
   labels:
     strimzi.io/cluster: {{ .Values.cluster.name }}
 spec:
+  authentication:
+    type: {{ .Values.cluster.listener.authentication.type }}
   authorization:
     type: simple
     acls:

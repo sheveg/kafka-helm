@@ -7,7 +7,7 @@ metadata:
     strimzi.io/cluster: {{ .Values.cluster.name }}
 spec:
   authentication:
-    type: tls
+    type: {{ .Values.cluster.listener.authentication.type }}
   authorization:
     # Official docs on authorizations required for the Schema Registry:
     # https://docs.confluent.io/current/schema-registry/security/index.html#authorizing-access-to-the-schemas-topic

@@ -44,6 +44,13 @@ cluster:
     requests:
       cpu: 200m
       memory: 768Mi
+  listener:
+    name: tls
+    port: 9093
+    type: internal
+    tls: true
+    authentication:
+      type: scram-sha-512
 
 nodeAffinityLabel: kubernetes.io/hostname
 
@@ -94,7 +101,7 @@ consumer:
   password: "consumer-password"
   env:
     - name: Kafka__BootstrapUrl
-      value: "kafka-cluster-kafka-bootstrap:9092"
+      value: "{{ .Values.cluster.name }}-kafka-bootstrap:{{ .Values.cluster.listener.port }}"
     - name: Kafka__Topic
       value: "{{ .Values.topic }}"
     - name: Kafka__User
@@ -102,9 +109,9 @@ consumer:
     - name: Kafka__Password
       value: "{{ .Values.consumer.password }}"
     - name: Kafka__SaslMechanism
-      value: "PLAIN"
+      value: "{{ .Values.cluster.listener.authentication.type }}"
     - name: Kafka__SecurityProtocol
-      value: "SASL_PLAINTEXT"
+      value: "SASL_SSL"
   
   replicaCount: 1
 
@@ -119,7 +126,7 @@ producer:
   password: "producer-password"
   env:
     - name: Kafka__BootstrapUrl
-      value: "kafka-cluster-kafka-bootstrap:9092"
+      value: "{{ .Values.cluster.name }}-kafka-bootstrap:{{ .Values.cluster.listener.port }}"
     - name: Kafka__Topic
       value: "{{ .Values.topic }}"
     - name: Kafka__User
@@ -127,9 +134,9 @@ producer:
     - name: Kafka__Password
       value: "{{ .Values.producer.password }}"
     - name: Kafka__SaslMechanism
-      value: "PLAIN"
+      value: "{{ .Values.cluster.listener.authentication.type }}"
     - name: Kafka__SecurityProtocol
-      value: "SASL_PLAINTEXT"
+      value: "SASL_SSL"
   replicaCount: 1
 
 imagePullSecrets: []

@@ -101,6 +101,10 @@ consumer:
       value: "{{ .Values.consumer.user }}"
     - name: Kafka__Password
       value: "{{ .Values.consumer.password }}"
+    - name: Kafka__SaslMechanism
+      value: "PLAIN"
+    - name: Kafka__SecurityProtocol
+      value: "SASL_PLAINTEXT"
   
   replicaCount: 1
 
@@ -122,6 +126,10 @@ producer:
       value: "{{ .Values.producer.user }}"
     - name: Kafka__Password
       value: "{{ .Values.producer.password }}"
+    - name: Kafka__SaslMechanism
+      value: "PLAIN"
+    - name: Kafka__SecurityProtocol
+      value: "SASL_PLAINTEXT"
   replicaCount: 1
 
 imagePullSecrets: []

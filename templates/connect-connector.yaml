@@ -1,0 +1,27 @@
+{{- if .Capabilities.APIVersions.Has "kafka.strimzi.io/v1beta2" }}
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name:  {{ .Values.connectConnector.name }}
+  labels:
+    strimzi.io/cluster: {{ .Values.connectCluster.name }}
+spec:
+  class: io.confluent.connect.jdbc.JdbcSinkConnector
+  tasksMax: {{ .Values.connectConnector.tasksMax }}
+  config:
+    topics: {{ .Values.topic }}
+    value.converter.schemas.enable: true
+    value.converter: io.confluent.connect.avro.AvroConverter
+    value.converter.schema.registry.url: 
+    key.converter.schemas.enable: true
+    key.converter: io.confluent.connect.avro.AvroConverter
+    key.converter.schema.registry.url: 
+    auto.create: true
+    auto.evolve: true
+    pk.mode: record_value
+    pk.fields: id
+    insert.mode : upsert
+    connection.url: {{ .Values.connectConnector.connectionUrl }}
+    connection.user: {{ .Values.connectConnector.connectionUser }}
+    connection.password: {{ .Values.connectConnector.connectionPassword }}
+{{- end }}

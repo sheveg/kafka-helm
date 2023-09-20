@@ -1,15 +1,32 @@
-kafkaConnect:
+topic: random-messages
+
+connectConnector:
+  name: postgres-connector
+  connectionUrl: jdbc:postgresql://postgresql-cluster.postgres.svc:5432/logs
+  connectionUser: loguser
+  connectionPassword: postgrespw
+  tasksMax: 1
+
+connectCluster:
   name: "kafka-connect-cluster"
   version: "3.5.1"
   replicas: 1
-  config:
-    topics: random-messages
+  build:
+    registrySecret: registry-credentials
+    output:
+      type: docker
+      image: ghcr.io/sheveg/connect-cluster-jdbc:latest
+    plugins:
+      - name: jdbc-sink-connector
+        artifacts:
+          - type: zip
+            url: https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-jdbc/versions/10.7.4/confluentinc-kafka-connect-jdbc-10.7.4.zip
 
-kafka:
+cluster:
   name: "kafka-cluster"
   version: "3.5.1"
   replicas: 3
-  cluster:
+  config:
     # For upgrading details see
     # https://strimzi.io/docs/operators/latest/deploying.html#proc-upgrading-brokers-newer-kafka-str
     logMessageFormatVersion: "3.2.1"
@@ -66,32 +83,45 @@ entityOperator:
         cpu: 10m
         memory: 8Mi
 
-kafkaConsumer:
+consumer:
   name: "kafka-consumer"
   image:
     repository: ghcr.io/sheveg/kafkaconsumer
     pullPolicy: Always
     # Overrides the image tag whose default is the chart appVersion.
     tag: "main"
+  user: "consumerUser"
+  password: "consumerPW"
   env:
-  - name: Kafka__BootstrapUrl
-    value: "kafka-cluster-kafka-bootstrap:9092"
-  - name: Kafka__Topic
-    value: "random-messages"
+    - name: Kafka__BootstrapUrl
+      value: "kafka-cluster-kafka-bootstrap:9092"
+    - name: Kafka__Topic
+      value: "{{ .Values.topic }}"
+    - name: Kafka__User
+      value: "{{ .Values.consumer.user }}"
+    - name: Kafka__Password
+      value: "{{ .Values.consumer.password }}"
+  
   replicaCount: 1
 
-kafkaProducer:
+producer:
   name: "kafka-producer"
   image:
     repository: ghcr.io/sheveg/kafkaproducer
     pullPolicy: Always
     # Overrides the image tag whose default is the chart appVersion.
     tag: "main"
+  user: "producer-user"
+  password: "producer-password"
   env:
-  - name: Kafka__BootstrapUrl
-    value: "kafka-cluster-kafka-bootstrap:9092"
-  - name: Kafka__Topic
-    value: "random-messages"
+    - name: Kafka__BootstrapUrl
+      value: "kafka-cluster-kafka-bootstrap:9092"
+    - name: Kafka__Topic
+      value: "{{ .Values.topic }}"
+    - name: Kafka__User
+      value: "{{ .Values.producer.user }}"
+    - name: Kafka__Password
+      value: "{{ .Values.producer.password }}"
   replicaCount: 1
 
 imagePullSecrets: []

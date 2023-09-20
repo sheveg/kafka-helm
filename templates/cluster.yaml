@@ -2,11 +2,11 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka
 metadata:
-  name: {{ .Values.kafka.name }}
+  name: {{ .Values.cluster.name }}
 spec:
   kafka:
-    version: {{ .Values.kafka.version }}
-    replicas: {{ .Values.kafka.replicas }}
+    version: {{ .Values.cluster.version }}
+    replicas: {{ .Values.cluster.replicas }}
     listeners:
       - name: plain
         port: 9092
@@ -25,14 +25,14 @@ spec:
     authorization:
       type: simple
     config:
-      offsets.topic.replication.factor: {{ .Values.kafka.cluster.offsetsTopicReplicationFactor }}
-      transaction.state.log.replication.factor: {{ .Values.kafka.cluster.transactionStateLogReplicationFactor }}
-      transaction.state.log.min.isr: {{ .Values.kafka.cluster.transactionStateLogMinInSyncReplicas }}
-      log.message.format.version: {{ .Values.kafka.cluster.logMessageFormatVersion | quote }}
-      inter.broker.protocol.version: {{ .Values.kafka.cluster.interBrokerProtocolVersion | quote }}
-      auto.create.topics.enable: {{ .Values.kafka.cluster.autoCreateTopicsEnable | quote }}
-      default.replication.factor: {{ .Values.kafka.cluster.defaultReplicationFactor }}
-      min.insync.replicas: {{ .Values.kafka.cluster.minInsyncReplicas }}
+      offsets.topic.replication.factor: {{ .Values.cluster.config.offsetsTopicReplicationFactor }}
+      transaction.state.log.replication.factor: {{ .Values.cluster.config.transactionStateLogReplicationFactor }}
+      transaction.state.log.min.isr: {{ .Values.cluster.config.transactionStateLogMinInSyncReplicas }}
+      log.message.format.version: {{ .Values.cluster.config.logMessageFormatVersion | quote }}
+      inter.broker.protocol.version: {{ .Values.cluster.config.interBrokerProtocolVersion | quote }}
+      auto.create.topics.enable: {{ .Values.cluster.config.autoCreateTopicsEnable | quote }}
+      default.replication.factor: {{ .Values.cluster.config.defaultReplicationFactor }}
+      min.insync.replicas: {{ .Values.cluster.config.minInsyncReplicas }}
     rack:
       topologyKey: {{ .Values.nodeAffinityLabel }}
     storage:
@@ -50,7 +50,7 @@ spec:
             argocd.argoproj.io/sync-options: Prune=false
             argocd.argoproj.io/compare-options: IgnoreExtraneous
     resources:
-      {{- toYaml .Values.kafka.resources | nindent 6 }}
+      {{- toYaml .Values.cluster.resources | nindent 6 }}
   zookeeper:
     replicas: {{ .Values.zookeeper.replicas }}
     storage:

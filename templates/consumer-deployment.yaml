@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.kafkaConsumer.name }}
+  name: {{ .Values.consumer.name }}
   labels:
     {{- include "kafka.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.kafkaConsumer.replicaCount }}
+  replicas: {{ .Values.consumer.replicaCount }}
   selector:
     matchLabels:
       {{- include "kafka.selectorLabels" . | nindent 6 }}
@@ -29,9 +29,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.kafkaConsumer.image.repository }}:{{ .Values.kafkaConsumer.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.kafkaConsumer.image.pullPolicy }}
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+          image: "{{ .Values.consumer.image.repository }}:{{ .Values.consumer.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.consumer.image.pullPolicy }}
           env:
-            {{- toYaml .Values.kafkaConsumer.env | nindent 12 }}
+             {{- tpl ( .Values.producer.env | toYaml) . | nindent 12 }}

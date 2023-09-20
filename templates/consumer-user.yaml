@@ -1,0 +1,18 @@
+{{- if .Capabilities.APIVersions.Has "kafka.strimzi.io/v1beta2" }}
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name:  {{ .Values.consumer.user }}
+  labels:
+    strimzi.io/cluster: {{ .Values.cluster.name }}
+spec:
+  authorization:
+    type: simple
+    acls:
+      - resource:
+          type: topic
+          name: {{ .Values.topic }}
+          patternType: literal
+        operation: Read
+        type: allow
+{{- end }}

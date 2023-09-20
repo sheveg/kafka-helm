@@ -45,10 +45,10 @@ cluster:
       cpu: 200m
       memory: 768Mi
   listener:
-    name: tls
-    port: 9093
+    name: plain
+    port: 9092
     type: internal
-    tls: true
+    tls: false
     authentication:
       type: scram-sha-512
 
@@ -111,7 +111,7 @@ consumer:
     - name: Kafka__SaslMechanism
       value: "{{ .Values.cluster.listener.authentication.type }}"
     - name: Kafka__SecurityProtocol
-      value: "SASL_SSL"
+      value: "SASL_PLAINTEXT"
   
   replicaCount: 1
 

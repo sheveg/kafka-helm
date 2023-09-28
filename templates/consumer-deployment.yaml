@@ -32,4 +32,4 @@ spec:
           image: "{{ .Values.consumer.image.repository }}:{{ .Values.consumer.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.consumer.image.pullPolicy }}
           env:
-             {{- tpl ( .Values.producer.env | toYaml) . | nindent 12 }}
+             {{- tpl ( .Values.consumer.env | toYaml) . | nindent 12 }}

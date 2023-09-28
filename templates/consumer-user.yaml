@@ -17,4 +17,9 @@ spec:
           patternType: literal
         operation: Read
         type: allow
+      - resource:
+          type: group
+          name: foo
+          patternType: literal
+        operation: Read,Describe
 {{- end }}

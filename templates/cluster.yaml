@@ -20,6 +20,8 @@ spec:
         tls: false
     authorization:
       type: simple
+      superUsers:
+        - CN=client_1
     config:
       offsets.topic.replication.factor: {{ .Values.cluster.config.offsetsTopicReplicationFactor }}
       transaction.state.log.replication.factor: {{ .Values.cluster.config.transactionStateLogReplicationFactor }}
